@@ -71,7 +71,7 @@
 #include <linux/via.h>
 #if defined(__x86_64__) || defined(__amd64__)
 #include <asm/parport.h>
-#elif defined(__arm__) || defined(__aarch64__)
+#elif defined(__arm__) || defined(__aarch64__) || defined(__sw_64__)
 static int parport_pc_find_isa_ports(int autoirq, int autodma);
 static int parport_pc_find_nonpci_ports(int autoirq, int autodma)
 {

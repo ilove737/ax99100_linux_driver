@@ -49,6 +49,9 @@
 #include <asm/io.h>
 #include <asm/irq.h>
 #include <asm/uaccess.h>
+#if defined(__sw_64__)
+#include <linux/uaccess.h>
+#endif
 #include "ax99100_sp.h"
 #include "ax99100_spi.h"
 
@@ -1025,6 +1028,7 @@ static void receive_chars_dma_done(struct uart_99100_port * up, int iirg)
         struct tty_struct *tty = up->port.info->port.tty;
 #else
 	struct tty_struct *tty = up->port.state->port.tty;
+	u8 ch;
 #endif
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(5,0,0)
 	u8 ch;
