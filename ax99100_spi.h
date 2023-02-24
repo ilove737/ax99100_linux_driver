@@ -106,7 +106,7 @@
 
 /* Device */
 #define	DEV_NAME	"ax99100"
-#define	CLASS_NAME	"spidev"
+#define	CLASS_NAME	"axspidev"
 #define NODE_NAME	"spi"
 
 /* Netlink */
