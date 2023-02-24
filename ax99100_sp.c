@@ -64,7 +64,11 @@ KERN_INFO "ASIX AX99100 PCIe Bridg to Serial Port:v" DRV_VERSION
 	"    http://www.asix.com.tw\n";
 	
 //All transactions are with memory mapped registers
+#if defined(__sw_64__)
+#define MEM_AXS 0
+#else
 #define MEM_AXS 1
+#endif
 
 /*
  * Definitions for PCI support.
@@ -2250,7 +2254,7 @@ static int serial99100_request_port(struct uart_port *port)
 
 	//todo:the mem_size and the mem2_size are not yet known properly
 	DEBUG("In %s---------------------------------------START\n",__FUNCTION__);
-#if defined(__x86_64__) || defined(__amd64__)
+#if defined(__x86_64__) || defined(__amd64__) || defined(__sw_64__)
 	if(!request_region(up->port.iobase, size, "AX99100"))
 		return -EBUSY;
 #endif
@@ -2263,7 +2267,7 @@ static int serial99100_request_port(struct uart_port *port)
 	return ret;
 	
 release:
-#if defined(__x86_64__) || defined(__amd64__)
+#if defined(__x86_64__) || defined(__amd64__) || defined(__sw_64__)
 	release_region(up->port.iobase,size);
 #endif
 	DEBUG("In %s---------------------------------------END\n",__FUNCTION__);
@@ -2691,7 +2695,7 @@ int serial99100_find_match_or_unused(struct uart_port *port)
 	 * free entry.  We look for one which hasn't been previously
 	 * used (indicated by zero iobase).
 	 */
-#if defined(__x86_64__) || defined(__amd64__)
+#if defined(__x86_64__) || defined(__amd64__) || defined(__sw_64__)
 	for (i = 0; i < UART99100_NR; i++){
 		if (serial99100_ports[i].port.iobase == 0){
 			return i;
@@ -3030,7 +3034,7 @@ static int __devinit serial99100_probe(struct pci_dev *dev,
 	}
 
 	//To verify whether it is a AX99100 type BARs
-#if defined(__x86_64__) || defined(__amd64__)
+#if defined(__x86_64__) || defined(__amd64__) || defined(__sw_64__)
 	if(((pci_resource_flags(dev,FL_BASE0) & BAR_FMT) ^ BAR_IO) ||
 			((pci_resource_flags(dev,FL_BASE2) & BAR_FMT) ^ BAR_MEM) ||
 			((pci_resource_flags(dev,FL_BASE4) & BAR_FMT) ^ BAR_MEM)) {
